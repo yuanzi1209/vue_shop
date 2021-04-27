@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-   我是新增的
+    <router-view></router-view>
   </div>
 </template>
 
