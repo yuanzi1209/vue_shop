@@ -1,12 +1,15 @@
 <template>
   <div class="login_container">
     <div class="login">
+      <!-- 头像区 -->
       <div class="avater">
         <img src="../assets/logo.png" alt="" />
       </div>
+      <!-- 表单区
+      * prop="xx" 是验证规则生效的必要条件
+      * ref="xx" ref表示引用，拿到的是表单的实例对象-->
       <el-form
-        label-width="0"
-        class="form_login"
+        class="login_form"
         :model="loginForm"
         :rules="loginFormRules"
         ref="loginFormRef"
@@ -65,21 +68,28 @@ export default {
   },
   methods: {
     resetLoginForm() {
+      // this 指的是Login组件
       // console.log(this);
+      // loginFormRef 指的是表单的实例对象
       this.$refs.loginFormRef.resetFields();
     },
     login() {
-      this.$refs.loginFormRef.validate(async (valid) => {
+      // 表单预验证： valid 指的是验证结果（布尔值）
+      this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return;
-        const { data } = await this.$http.post("login", this.loginForm);
-        // console.log(data)
-        if (data.meta.status !== 200) {
+
+        // 向后台发送请求 async/await
+        const { data:res } = await this.$http.post("login", this.loginForm);
+        // console.log(res)
+        if (res.meta.status !== 200) {
           return this.$message.error("登录失败");
         }
         this.$message.success("登录成功");
+
         // 保存 token,并跳转到后台主页
-        sessionStorage.setItem('token',data.data.token)
-        this.$router.push('/home')
+        sessionStorage.setItem("token", res.data.token);
+        // 编程式导航
+        this.$router.push("/home");
       });
     },
   },
@@ -103,14 +113,15 @@ export default {
 }
 .avater {
   position: absolute;
-  left: 215px;
-  transform: translate(-65px, -65px);
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 130px;
   height: 130px;
   border: 1px solid #eee;
   border-radius: 50%;
   padding: 10px;
   background-color: #fff;
+  box-shadow: 0 0 10px #ddd;
   img {
     width: 100%;
     height: 100%;
@@ -118,7 +129,7 @@ export default {
     background-color: #eee;
   }
 }
-.form_login {
+.login_form {
   position: absolute;
   bottom: 0;
   width: 100%;

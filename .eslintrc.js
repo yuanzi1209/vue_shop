@@ -1,4 +1,3 @@
-/* eslint-disable eol-last */ 
 module.exports = {
   root: true,
   env: {
