@@ -58,7 +58,7 @@
               type="primary"
               icon="el-icon-edit"
               size="mini"
-              @click="searchUserInfo(scope.row.id)"
+              @click="queryUserInfo(scope.row.id)"
             ></el-button>
             <el-button
               type="danger"
@@ -306,8 +306,8 @@ export default {
         console.log(err)
       }
     },
-    async searchUserInfo(id) {
-      // console.log('editUserInfo')
+    async queryUserInfo(id) {
+      // console.log(id)
       this.editDialogVisible = true
       const { data: res } = await this.$http.get(`users/${id}`)
       console.log(res)
@@ -321,6 +321,7 @@ export default {
       this.$refs.editFormRef.resetFields()
     },
     editUserInfo() {
+      // 预验证
       this.$refs.editFormRef.validate(async (valid) => {
         // console.log(valid)
         if (!valid) return
@@ -340,33 +341,28 @@ export default {
       })
     },
     async removeUserInfo(id) {
-      const confirmRes = await this.$confirm(
-        '此操作将永久删除该文件, 是否继续?',
+      // 删除-弹框提示
+      const confirmResult = await this.$confirm(
+        '此操作将永久删除该用户, 是否继续?',
         '提示',
         {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
         }
-      ).catch((err) => err)
-      if (confirmRes !== 'confirm') {
+      ).catch(err => {return err})
+      if (confirmResult !== 'confirm') {
         return this.$message.info('已取消删除')
       }
+      // 向后台发送请求：删除用户
       const { data: res } = await this.$http.delete(`users/${id}`)
       // console.log(res);
       if (res.meta.status !== 200) {
         return this.$message.error(res.meta.msg)
       }
       this.$message.success(res.meta.msg)
-    },
-    /*  sizeChange(size) {
-      this.queryParams.pagesize = size
       this.getUsersList()
     },
-    numChange(num) {
-      this.queryParams.pagesize = num
-      this.getUsersList()
-    }, */
   },
 }
 </script>
