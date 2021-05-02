@@ -352,9 +352,9 @@ export default {
       if (confirmRes !== 'confirm') {
         return this.$message.info('已取消删除')
       }
-      const {data:res}=await this.$http.delete(`users/${id}`)
+      const { data: res } = await this.$http.delete(`users/${id}`)
       // console.log(res);
-      if(res.meta.status!==200){
+      if (res.meta.status !== 200) {
         return this.$message.error(res.meta.msg)
       }
       this.$message.success(res.meta.msg)
