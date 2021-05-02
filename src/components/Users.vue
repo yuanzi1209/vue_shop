@@ -339,7 +339,7 @@ export default {
         this.getUsersList()
       })
     },
-    async removeUserInfo() {
+    async removeUserInfo(id) {
       const confirmRes = await this.$confirm(
         '此操作将永久删除该文件, 是否继续?',
         '提示',
@@ -352,6 +352,12 @@ export default {
       if (confirmRes !== 'confirm') {
         return this.$message.info('已取消删除')
       }
+      const {data:res}=await this.$http.delete(`users/${id}`)
+      // console.log(res);
+      if(res.meta.status!==200){
+        return this.$message.error(res.meta.msg)
+      }
+      this.$message.success(res.meta.msg)
     },
     /*  sizeChange(size) {
       this.queryParams.pagesize = size
