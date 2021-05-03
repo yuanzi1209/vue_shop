@@ -9,6 +9,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
+// 导入 vue-table-with-tree-grid
+import treeTable from 'vue-table-with-tree-grid'
+Vue.component('tree-table', treeTable)
+
 // 导入 qyy-breadcrumb
 import qyyBreadcrumb from '@/plugins/qyy-breadcrumb.vue'
 Vue.component('qyy-breadcrumb', qyyBreadcrumb)
@@ -26,7 +30,7 @@ axios.interceptors.request.use(config => {
   config.headers.Authorization = sessionStorage.getItem('token')
   return config
 })
-Vue.prototype.$http=axios
+Vue.prototype.$http = axios
 
 import './assets/fonts/iconfont.css'
 import './assets/css/global.css'
