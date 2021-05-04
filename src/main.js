@@ -17,9 +17,9 @@ Vue.component('tree-table', treeTable)
 import qyyBreadcrumb from '@/plugins/qyy-breadcrumb.vue'
 Vue.component('qyy-breadcrumb', qyyBreadcrumb)
 
-/* // 导入 qyy-pagination
-import qyyPpagination from '@/plugins/qyy-pagination.vue'
-Vue.component('qyy-pagination', qyyPpagination) */
+// 导入 qyy-pagination
+import qyyPagination from '@/plugins/qyy-pagination.vue'
+Vue.component('qyy-pagination', qyyPagination)
 
 // 导入 axios
 import axios from 'axios'

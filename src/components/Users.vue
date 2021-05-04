@@ -86,7 +86,7 @@
       <!-- 分页区
       * @size-change 监听pagesize
       * @current-change 监听pagenum-->
-      <el-pagination
+      <!-- <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryParams.pagenum"
@@ -95,11 +95,14 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       >
-      </el-pagination>
-      <!-- <qyy-pagination>
-        @size-change="sizeChange" @num-change="numChange"
-        :pageInfo="queryParams" :total="total"
-      </qyy-pagination> -->
+      </el-pagination> -->
+      <qyy-pagination
+        @size-change="sizeChange"
+        @num-change="numChange"
+        :pageInfo="queryParams"
+        :total="total" 
+      >
+      </qyy-pagination>
     </el-card>
     <!-- 添加用户的对话框
     * visible 是否显示对话框 -->
@@ -255,7 +258,7 @@ export default {
       this.usersList = res.data.users
       this.total = res.data.total
     },
-    handleSizeChange(newSize) {
+    /* handleSizeChange(newSize) {
       // console.log(newSize);
       this.queryParams.pagesize = newSize
       this.getUsersList()
@@ -264,7 +267,7 @@ export default {
       // console.log(newPage);
       this.queryParams.pagenum = newPage
       this.getUsersList()
-    },
+    }, */
     async userStateChanged(userinfo) {
       // console.log(userinfo);
       const { data: res } = await this.$http.put(
@@ -350,7 +353,9 @@ export default {
           cancelButtonText: '取消',
           type: 'warning',
         }
-      ).catch(err => {return err})
+      ).catch((err) => {
+        return err
+      })
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消删除')
       }
@@ -361,6 +366,15 @@ export default {
         return this.$message.error(res.meta.msg)
       }
       this.$message.success(res.meta.msg)
+      this.getUsersList()
+    },
+    sizeChange(size) {
+      // console.log(size);
+      this.queryParams.pagesize = size
+      this.getUsersList()
+    },
+    numChange(num) {
+      this.queryParams.pagenum = num
       this.getUsersList()
     },
   },

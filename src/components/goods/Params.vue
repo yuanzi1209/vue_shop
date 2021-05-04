@@ -30,7 +30,7 @@
           ></el-cascader>
         </el-col>
       </el-row>
-      <!-- Tab 区 -->
+      <!-- Tab区 -->
       <el-tabs v-model="activeName" @tab-click="handleTabClick">
         <!-- 动态参数 -->
         <el-tab-pane label="动态参数" name="many">
@@ -179,6 +179,7 @@ export default {
     return {
       cateList: [],
       cascaderProps: {
+        expandTrigger: 'hover',
         value: 'cat_id',
         label: 'cat_name',
         children: 'children',
@@ -220,6 +221,7 @@ export default {
       this.$message.success(res.meta.msg)
       this.cateList = res.data
     },
+    /* 级联选择框change时 */
     async handleChange() {
       // console.log(this.selectedCateKeys)
       this.getParamsData()
