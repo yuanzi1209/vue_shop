@@ -51,6 +51,7 @@
                   closable
                   >{{ item }}
                 </el-tag>
+                <!-- 按钮与输入框的切换显示 -->
                 <el-input
                   class="input-new-tag"
                   v-if="scope.row.inputVisible"
@@ -226,6 +227,7 @@ export default {
       // console.log(this.selectedCateKeys)
       this.getParamsData()
     },
+    /* 切换tab时 */
     handleTabClick() {
       // console.log(this.activeName)
       this.getParamsData()
@@ -248,6 +250,7 @@ export default {
 
       res.data.forEach((item) => {
         item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
+        /* 解决多行互相影响问题 */
         item.inputVisible = false
         item.inputValue = ''
       })
@@ -264,6 +267,7 @@ export default {
     showOnlyDialog() {
       this.onlyDialogVisible = true
     },
+    /* 添加动态参数或者静态属性 */
     async addParams() {
       try {
         await this.$refs.addManyParamsFormRef.validate()
@@ -286,6 +290,7 @@ export default {
         console.log(err)
       }
     },
+    /* 文本框失去焦点 or 按下enter键 (注：传row对象过来才能使数据具有响应式) */
     handleInputConfirm(row) {
       // console.log('ok')
       if (row.inputValue.trim().length === 0) {
@@ -293,11 +298,15 @@ export default {
         row.inputValue = ''
         return
       }
+      // 输入内容后的处理
       row.attr_vals.push(row.inputValue.trim())
       row.inputVisible = false
+
+      // 发请求
     },
     showInput(row) {
       row.inputVisible = true
+      /* 自动获得焦点 */
       this.$nextTick((_) => {
         this.$refs.saveTagInput.$refs.input.focus()
       })

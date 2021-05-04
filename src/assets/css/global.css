@@ -1,8 +1,22 @@
 html,
 body,
-#app{
+#app {
     height: 100%;
     margin: 0;
     padding: 0;
     min-width: 1366px;
+  
 }
+
+.el-step__title {
+    font-size: 14px;
+}
+
+.el-tabs__item,
+.el-form-item__label {
+    font-size: 15px;
+}
+
+.el-checkbox__label {
+    padding-left: 5px;
+  }
