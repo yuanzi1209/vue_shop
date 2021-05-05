@@ -19,4 +19,8 @@ body,
 
 .el-checkbox__label {
     padding-left: 5px;
-  }
+}
+
+.ql-editor{
+    height: 300px;
+}

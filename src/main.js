@@ -13,6 +13,16 @@ Vue.use(ElementUI)
 import treeTable from 'vue-table-with-tree-grid'
 Vue.component('tree-table', treeTable)
 
+// 导入富文本编辑器
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+Vue.use(VueQuillEditor)
+
+/* // 导入 lodash (用于深拷贝)
+import _ from 'lodash' */
+
 // 导入 qyy-breadcrumb
 import qyyBreadcrumb from '@/plugins/qyy-breadcrumb.vue'
 Vue.component('qyy-breadcrumb', qyyBreadcrumb)

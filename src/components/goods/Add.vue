@@ -99,14 +99,24 @@
               </div>
             </el-upload></el-tab-pane
           >
-          <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
+          <el-tab-pane label="商品内容" name="4">
+            <!-- 富文本编辑器 -->
+            <quill-editor v-model="addForm.goods_introduce"></quill-editor>
+            <el-button type="primary" @click="addGoods">添加商品</el-button>
+          </el-tab-pane>
         </el-tabs>
       </el-form>
     </el-card>
+
+    <!-- 预览图片弹出框 -->
+    <el-dialog title="预览" :visible.sync="previewDialogVisible" width="50%">
+      <img :src="previewURL" alt="" style="width: 100%" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
   data() {
     return {
@@ -118,6 +128,8 @@ export default {
         goods_number: 0,
         goods_cate: [],
         pics: [],
+        goods_introduce: '',
+        attrs: [],
       },
       addFormRules: {
         goods_name: [
@@ -149,6 +161,8 @@ export default {
       headerObj: {
         Authorization: sessionStorage.getItem('token'),
       },
+      previewURL: '',
+      previewDialogVisible: false,
     }
   },
   created() {
@@ -217,12 +231,71 @@ export default {
         this.onlyTabData = res.data
       }
     },
-    handlePreview() {},
-    handleRemove() {},
+    handlePreview(file) {
+      // console.log(file)
+      this.previewURL = file.response.data.url
+      this.previewDialogVisible = true
+    },
+    handleRemove(file) {
+      // console.log(file)
+      const tem_path = file.response.data.tmp_path
+      const index = this.addForm.pics.findIndex((item) => item.pic === tem_path)
+      // console.log(index)
+      /* 根据索引号删除数组里的元素 */
+      this.addForm.pics.splice(index, 1)
+      // console.log(this.addForm)
+    },
     handleSuccess(response) {
       // console.log(response)
-      const picObj = { pic: this.response.data.tmp_path }
+      const picObj = { pic: response.data.tmp_path }
       this.addForm.pics.push(picObj)
+      // console.log(this.addForm)
+    },
+    async addGoods() {
+      /* 提交前对表单进行预验证 */
+      this.$refs.addFormRef.validate((valid) => {
+        if (!valid) {
+          return this.$message.error('请填写必要的表单项')
+        }
+      })
+      /* 后台：添加商品 */
+
+      /* 易错处
+      this. addForm.goods_cate=this. addForm.goods_cate.join(',')
+      console.log(this. addForm); */
+
+      /* 深拷贝 */
+      const form = _.cloneDeep(this.addForm)
+      /* 处理 goods_cate 格式 */
+      form.goods_cate = form.goods_cate.join()
+      // console.log(form)
+
+      /* 处理 attrs */
+      this.manyTabData.forEach((item) => {
+        const newInfo1 = {
+          attr_id: item.attr_id,
+          attr_value: item.attr_vals.join(),
+        }
+        this.addForm.attrs.push(newInfo1)
+      })
+      this.onlyTabData.forEach((item) => {
+        const newInfo2 = {
+          attr_id: item.attr_id,
+          attr_value: item.attr_vals,
+        }
+        this.addForm.attrs.push(newInfo2)
+      })
+      form.attrs = this.addForm.attrs
+      console.log(form)
+
+      const { data: res } = await this.$http.post('goods', form)
+      console.log(res)
+      if (res.meta.status !== 201) {
+        return this.$message.error('添加商品失败')
+      }
+      this.$message.success('添加商品成功')
+      /* 跳转到商品列表页面 */
+      this.$router.push('/goods')
     },
   },
 }
@@ -240,5 +313,8 @@ export default {
 }
 .el-checkbox {
   margin-right: 15px;
+}
+.el-button {
+  margin-top: 15px;
 }
 </style>
