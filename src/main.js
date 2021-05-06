@@ -42,7 +42,7 @@ axios.interceptors.request.use(config => {
 })
 Vue.prototype.$http = axios
 
-// 定义格式化时间的过滤器
+// 定义格式化时间的全局过滤器
 Vue.filter('dateFormat', function (originVal) {
   const dt = new Date(originVal)
 

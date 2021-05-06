@@ -196,8 +196,8 @@ export default {
     },
     async showProcessDialog() {
       /* 获取物流信息--失败*/
-      const { data: res } = await this.$http.get(`/kuaidi/804909574412544580`)
-      console.log(res)
+      // const { data: res } = await this.$http.get(`/kuaidi/804909574412544580`)
+      // console.log(res)
       //   if (res.meta.status !== 200)
       //     return this.$message.error('获取订单列表失败')
       //   this.$message.success('获取订单列表成功')

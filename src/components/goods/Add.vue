@@ -7,9 +7,17 @@
     ></qyy-breadcrumb>
     <!-- 卡片区 -->
     <el-card class="box-card">
-      <!-- 提示框 -->
-      <el-alert title="添加商品信息" type="info" show-icon center> </el-alert>
-      <!-- 步骤条 -->
+      <!-- 警告框 -->
+      <el-alert
+        title="添加商品信息"
+        type="info"
+        show-icon
+        center
+        :closable="false"
+      >
+      </el-alert>
+      <!-- 步骤条
+      * active 数字型 -->
       <el-steps
         :space="200"
         :active="+activeIndex"
@@ -23,7 +31,7 @@
         <el-step title="商品内容"></el-step>
         <el-step title="完成"></el-step>
       </el-steps>
-      <!-- 表单 -->
+      <!-- 表单（必须放在tab栏外） -->
       <el-form
         :model="addForm"
         :rules="addFormRules"
@@ -31,7 +39,8 @@
         label-width="100px"
         label-position="top"
       >
-        <!-- tab栏 -->
+        <!-- tab栏
+        * 激活的name会自动绑定到 v-model-->
         <el-tabs
           :tab-position="'left'"
           v-model="activeIndex"
